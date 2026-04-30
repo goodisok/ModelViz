@@ -1,7 +1,26 @@
-import { Suspense } from 'react'
+import { Suspense, Component } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls } from '@react-three/drei'
 import ModelViewer from './ModelViewer'
+
+// Error boundary for Environment to prevent WebGL context loss
+class SafeEnvironment extends Component {
+  constructor(props) {
+    super(props)
+    this.state = { hasError: false }
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true }
+  }
+  render() {
+    if (this.state.hasError) return null
+    return (
+      <Suspense fallback={null}>
+        <Environment preset="city" background={false} />
+      </Suspense>
+    )
+  }
+}
 
 function SceneContent({ modelFile, autoRotate, wireframe, gridVisible, onModelLoad }) {
   return (
@@ -12,8 +31,8 @@ function SceneContent({ modelFile, autoRotate, wireframe, gridVisible, onModelLo
       <directionalLight position={[-3, 4, -3]} intensity={0.4} />
       <hemisphereLight args={['#b1e1ff', '#3a3a3a', 0.6]} />
 
-      {/* Environment */}
-      <Environment preset="city" background={false} />
+      {/* Environment (wrapped in error boundary) */}
+      <SafeEnvironment />
 
       {/* Grid */}
       {gridVisible && (

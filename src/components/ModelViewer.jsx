@@ -35,16 +35,6 @@ function countMeshData(obj) {
   return { vertices: Math.round(vertices), faces: Math.round(faces) }
 }
 
-function centerAndScale(group) {
-  const box = new THREE.Box3().setFromObject(group)
-  const center = box.getCenter(new THREE.Vector3())
-  const size = box.getSize(new THREE.Vector3())
-  const maxDim = Math.max(size.x, size.y, size.z)
-  const scale = maxDim > 0 ? 2 / maxDim : 1
-  group.position.copy(center.clone().negate())
-  group.scale.setScalar(scale)
-}
-
 function toggleWireframe(root, enabled) {
   root.traverse((child) => {
     if (child.isMesh) {
@@ -65,40 +55,47 @@ function toggleWireframe(root, enabled) {
 
 export default function ModelViewer({ url, ext, wireframe, onLoad }) {
   const groupRef = useRef()
-  const wireframeRef = useRef(wireframe)
   const loadedRef = useRef(false)
-  const sceneRef = useRef(null)
 
   const LoaderClass = LOADER_MAP[ext]
   const result = useLoader(LoaderClass, url)
 
+  // Extract stats from the loader result directly
   useEffect(() => {
     if (!result || loadedRef.current) return
-    const group = groupRef.current
-    if (!group) return
+    const root = result.scene || result
+    if (!root) return
 
-    // Extract scene/group from loader result
-    const root = result.scene ? result.scene.clone(true) : result.clone ? result.clone(true) : result
-    group.add(root)
-    sceneRef.current = root
+    // Count stats directly from the loaded result
+    const stats = countMeshData(root)
 
-    // Auto-center & scale
-    centerAndScale(group)
+    // Clone and add to group (deferred to next tick to ensure ref is set)
+    requestAnimationFrame(() => {
+      const group = groupRef.current
+      if (!group) return
 
-    // Report stats
-    const stats = countMeshData(group)
-    onLoad?.(stats)
+      const clone = root.clone ? root.clone(true) : root
+      group.add(clone)
 
-    loadedRef.current = true
+      // Auto-center & scale
+      const box = new THREE.Box3().setFromObject(clone)
+      const center = box.getCenter(new THREE.Vector3())
+      const size = box.getSize(new THREE.Vector3())
+      const maxDim = Math.max(size.x, size.y, size.z)
+      const scale = maxDim > 0 ? 2 / maxDim : 1
+      clone.position.sub(center)
+      clone.scale.setScalar(scale)
+
+      // Report stats
+      onLoad?.(stats)
+      loadedRef.current = true
+    })
   }, [result, onLoad])
 
   // Wireframe toggle
   useEffect(() => {
-    if (!sceneRef.current) return
-    if (wireframeRef.current !== wireframe) {
-      toggleWireframe(sceneRef.current, wireframe)
-      wireframeRef.current = wireframe
-    }
+    if (!groupRef.current || !loadedRef.current) return
+    toggleWireframe(groupRef.current, wireframe)
   }, [wireframe])
 
   return <group ref={groupRef} />
