@@ -52,12 +52,7 @@ export default function App() {
   }, [modelFile])
 
   const handleScreenshot = useCallback(() => {
-    const canvas = document.querySelector('canvas')
-    if (!canvas) return
-    const link = document.createElement('a')
-    link.download = `modelviz-${Date.now()}.png`
-    link.href = canvas.toDataURL('image/png')
-    link.click()
+    window.dispatchEvent(new CustomEvent('modelviz:capture'))
   }, [])
 
   const handleModelLoad = useCallback((stats) => {

@@ -2,6 +2,7 @@ import { Suspense, Component } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls } from '@react-three/drei'
 import ModelViewer from './ModelViewer'
+import ScreenshotCapture from './ScreenshotCapture'
 
 // Error boundary for Environment to prevent WebGL context loss
 class SafeEnvironment extends Component {
@@ -66,6 +67,9 @@ function SceneContent({ modelFile, autoRotate, wireframe, gridVisible, onModelLo
         minDistance={0.5}
         maxDistance={50}
       />
+
+      {/* Screenshot capture (inside Canvas for useThree access) */}
+      <ScreenshotCapture />
     </>
   )
 }
