@@ -18,6 +18,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    exclude: ['occt-import-js'],
-  },
+    exclude: [] // Pre-bundle — gives correct default: function, but needs WASM at deps path
+  }
 })

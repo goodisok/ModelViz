@@ -20,10 +20,9 @@ export default function CadModelViewer({ url, ext, wireframe, onLoad }) {
     async function init() {
       try {
         const occtimportjs = await import('occt-import-js')
+        // Vite pre-bundles CJS → ESM: { default: function }
         const loader = occtimportjs.default || occtimportjs
-        if (typeof loader !== 'function') {
-          throw new Error('occt-import-js loader type mismatch')
-        }
+        if (typeof loader !== 'function') throw new Error('occt-import-js not a function')
         const instance = await loader()
         if (!cancelled) setOcct(instance)
       } catch (err) {
