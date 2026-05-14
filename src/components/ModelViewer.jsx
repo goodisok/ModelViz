@@ -5,6 +5,10 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js'
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader.js'
+import { ColladaLoader } from 'three/examples/jsm/loaders/ColladaLoader.js'
+import { TDSLoader } from 'three/examples/jsm/loaders/TDSLoader.js'
+import { AMFLoader } from 'three/examples/jsm/loaders/AMFLoader.js'
+import { VTKLoader } from 'three/examples/jsm/loaders/VTKLoader.js'
 import * as THREE from 'three'
 
 const LOADER_MAP = {
@@ -14,6 +18,10 @@ const LOADER_MAP = {
   stl: STLLoader,
   fbx: FBXLoader,
   ply: PLYLoader,
+  dae: ColladaLoader,
+  '3ds': TDSLoader,
+  amf: AMFLoader,
+  vtk: VTKLoader,
 }
 
 function countMeshData(obj) {

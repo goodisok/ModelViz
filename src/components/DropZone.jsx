@@ -33,7 +33,7 @@ export default function DropZone({ onFile }) {
         </p>
 
         <div className="flex flex-wrap justify-center gap-2 text-xs mt-2">
-          {['GLB', 'GLTF', 'OBJ', 'STL', 'FBX', 'PLY'].map((fmt) => (
+          {['GLB','GLTF','OBJ','STL','FBX','PLY','STP','IGES','DAE','3DS','AMF','VTK'].map((fmt) => (
             <span key={fmt} className="px-2.5 py-1 rounded-full bg-zinc-700 text-zinc-300 font-mono">
               .{fmt.toLowerCase()}
             </span>
@@ -48,7 +48,7 @@ export default function DropZone({ onFile }) {
       <input
         ref={inputRef}
         type="file"
-        accept=".glb,.gltf,.obj,.stl,.fbx,.ply,.3dm"
+        accept=".glb,.gltf,.obj,.stl,.fbx,.ply,.stp,.step,.iges,.igs,.dae,.3ds,.amf,.vtk"
         className="hidden"
         onChange={handleChange}
       />

@@ -11,6 +11,14 @@ const SUPPORTED_FORMATS = {
   stl: 'STL',
   fbx: 'FBX',
   ply: 'PLY',
+  stp: 'STEP CAD',
+  step: 'STEP CAD',
+  iges: 'IGES CAD',
+  igs: 'IGES CAD',
+  dae: 'Collada',
+  '3ds': '3D Studio',
+  amf: 'AMF',
+  vtk: 'VTK',
 }
 
 export default function App() {

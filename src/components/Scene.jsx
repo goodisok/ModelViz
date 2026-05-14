@@ -2,7 +2,10 @@ import { Suspense, Component } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Environment, OrbitControls } from '@react-three/drei'
 import ModelViewer from './ModelViewer'
+import CadModelViewer from './CadModelViewer'
 import ScreenshotCapture from './ScreenshotCapture'
+
+const CAD_FORMATS = ['stp', 'step', 'iges', 'igs']
 
 // Error boundary for Environment to prevent WebGL context loss
 class SafeEnvironment extends Component {
@@ -48,14 +51,23 @@ function SceneContent({ modelFile, autoRotate, wireframe, gridVisible, onModelLo
 
       {/* Model */}
       {modelFile && (
-        <Suspense fallback={null}>
-          <ModelViewer
+        CAD_FORMATS.includes(modelFile.ext) ? (
+          <CadModelViewer
             url={modelFile.url}
             ext={modelFile.ext}
             wireframe={wireframe}
             onLoad={onModelLoad}
           />
-        </Suspense>
+        ) : (
+          <Suspense fallback={null}>
+            <ModelViewer
+              url={modelFile.url}
+              ext={modelFile.ext}
+              wireframe={wireframe}
+              onLoad={onModelLoad}
+            />
+          </Suspense>
+        )
       )}
 
       {/* Controls */}

@@ -7,4 +7,17 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 5173,
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          three: ['three', '@react-three/fiber', '@react-three/drei'],
+          occt: ['occt-import-js'],
+        },
+      },
+    },
+  },
+  optimizeDeps: {
+    exclude: ['occt-import-js'],
+  },
 })
