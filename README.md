@@ -9,7 +9,7 @@ Load, rotate, and inspect 3D models instantly — just drag a file into the brow
 
 ## Features
 
-- **Drag & drop** — drop `.glb`, `.gltf`, `.obj`, `.stl`, `.fbx`, `.ply` files
+- **Drag & drop** — drop `.glb`, `.gltf`, `.obj`, `.stl`, `.fbx`, `.ply`, `.stp`, `.iges`, `.dae`, `.3ds`, `.amf`, `.vtk` files
 - **Orbit controls** — rotate, pan, zoom with mouse/touch
 - **Auto-center & scale** — models fit the viewport automatically
 - **Auto-rotate** — toggle automatic rotation for inspection
@@ -50,14 +50,20 @@ Open `http://localhost:5173` and drag a 3D model in.
 
 ## Supported Formats
 
-| Format | Extension | Notes |
-|--------|-----------|-------|
-| glTF Binary | `.glb` | Recommended |
-| glTF | `.gltf` | |
-| Wavefront OBJ | `.obj` | No MTL support |
-| STL | `.stl` | |
-| FBX | `.fbx` | |
-| PLY | `.ply` | |
+| Format | Extension | Engine | Notes |
+|--------|-----------|--------|-------|
+| glTF Binary | `.glb` | Three.js GLTFLoader | Recommended |
+| glTF | `.gltf` | Three.js GLTFLoader | |
+| Wavefront OBJ | `.obj` | Three.js OBJLoader | No MTL support |
+| STL | `.stl` | Three.js STLLoader | |
+| FBX | `.fbx` | Three.js FBXLoader | |
+| PLY | `.ply` | Three.js PLYLoader | |
+| **STEP** | `.stp` `.step` | occt-import-js WASM | CAD assemblies, B-Rep → mesh |
+| **IGES** | `.iges` `.igs` | occt-import-js WASM | Legacy CAD interchange |
+| **Collada** | `.dae` | Three.js ColladaLoader | Architecture / BIM |
+| **3D Studio** | `.3ds` | Three.js TDSLoader | Legacy 3ds Max |
+| **AMF** | `.amf` | Three.js AMFLoader | Additive manufacturing |
+| **VTK** | `.vtk` | Three.js VTKLoader | Scientific visualization |
 
 ## License
 
